@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Photography Portfolio — Minimal JS</title>
+  <style>
+    :root{
+      --bg:#0f0f10; --card:#111214; --muted:#c8c8c8; --accent:#ff936b; --radius:12px;
+      --ff: system-ui, Arial;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:var(--ff); background:#0f0f10; color:white; padding:20px;
+      display:flex; justify-content:center;
+    }
+    .wrap{max-width:1050px;width:100%}
+
+    /* header */
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+    .logo{font-size:26px;font-weight:700;color:var(--accent)}
+    nav a{color:var(--muted); text-decoration:none; margin-left:15px}
+
+    /* hero */
+    .hero{background:#141619;padding:30px;border-radius:var(--radius);margin-bottom:30px}
+    h1{margin-bottom:10px;font-size:32px}
+    p{color:var(--muted)}
+
+    /* filter */
+    .filters{margin:20px 0; display:flex; gap:10px; flex-wrap:wrap}
+    .filter-btn{
+      padding:7px 14px; border-radius:20px; background:#1b1e22; cursor:pointer;
+      color:var(--muted); font-size:14px; border:1px solid #222;
+    }
+    .filter-btn.active{background:var(--accent); color:black}
+
+    /* gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px}
+    .card{position:relative; border-radius:var(--radius); overflow:hidden; background:#000}
+    .card img{width:100%;height:100%;object-fit:cover;display:block;transition:0.4s}
+    .card:hover img{transform:scale(1.05)}
+    .meta{position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.5);
+          padding:6px 10px;border-radius:6px;font-size:13px;color:white}
+
+    /* very simple lightbox */
+    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);
+              justify-content:center;align-items:center;padding:20px;z-index:50}
+    #lightbox img{max-width:90%;max-height:90%;border-radius:10px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="logo">Vignette</div>
+  <nav>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Minimal Photography Showcase</h1>
+  <p>A clean, elegant, minimal‑JavaScript portfolio for your best photos.</p>
+</section>
+
+<div class="filters">
+  <div class="filter-btn active" data-cat="all">All</div>
+  <div class="filter-btn" data-cat="landscape">Landscape</div>
+  <div class="filter-btn" data-cat="urban">Urban</div>
+  <div class="filter-btn" data-cat="portraits">Portraits</div>
+</div>
+
+<div id="gallery" class="gallery">
+  <div class="card" data-category="landscape">
+    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800" alt="Landscape" />
+    <div class="meta">Landscape</div>
+  </div>
+  <div class="card" data-category="urban">
+    <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=800" alt="Urban" />
+    <div class="meta">Urban</div>
+  </div>
+  <div class="card" data-category="portraits">
+    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800" alt="Portrait" />
+    <div class="meta">Portrait</div>
+  </div>
+  <div class="card" data-category="landscape">
+    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800" alt="Landscape" />
+    <div class="meta">Landscape</div>
+  </div>
+</div>
+
+<!-- SIMPLE LIGHTBOX -->
+<div id="lightbox"><img id="lbImg"></div>
+
+<footer id="contact" style="margin-top:30px;color:var(--muted);text-align:center">
+  Contact: hello@example.com
+</footer>
+
+<script>
+// ONLY ~20 LINES OF JS
+
+// filter
+const btns=document.querySelectorAll('.filter-btn');
+const cards=document.querySelectorAll('.card');
+btns.forEach(b=>b.onclick=()=>{
+  document.querySelector('.filter-btn.active').classList.remove('active');
+  b.classList.add('active');
+  const cat=b.dataset.cat;
+  cards.forEach(c=>c.style.display=(cat==='all'||c.dataset.category===cat)?'block':'none');
+});
+
+// very simple lightbox
+const lb=document.getElementById('lightbox');
+const lbImg=document.getElementById('lbImg');
+document.querySelectorAll('.card img').forEach(img=>img.onclick=()=>{
+  lb.style.display='flex'; lbImg.src=img.src;
+});
+lb.onclick=()=>lb.style.display='none';
+</script>
+
+</div>
+</body>
+</html>
